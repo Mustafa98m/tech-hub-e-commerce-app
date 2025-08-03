@@ -183,13 +183,26 @@ const handleViewChange = (event, nextView) => {
 </Link>
 
 
+
       </Grid>
     ))}
   </Grid>
 ) : (
+
+
   <Stack spacing={2}>
-    {currentProducts.map((product) => (
-      <Card key={product.id} sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+  {currentProducts.map((product) => (
+    <Card key={product.id} sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+      <Link
+        to={`/products/${product.id}`}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          textDecoration: 'none',
+          color: 'inherit',
+          flex: 1
+        }}
+      >
         <CardMedia
           component="img"
           sx={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 2 }}
@@ -209,16 +222,20 @@ const handleViewChange = (event, nextView) => {
             ${product.price}
           </Typography>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<ShoppingCart />}
-          onClick={() => addToCart(product)}
-        >
-          Add to Cart
-        </Button>
-      </Card>
-    ))}
-  </Stack>
+      </Link>
+
+      <Button
+        variant="contained"
+        startIcon={<ShoppingCart />}
+        onClick={() => addToCart(product)}
+        sx={{ ml: 2 }}
+      >
+        Add to Cart
+      </Button>
+    </Card>
+  ))}
+</Stack>
+
 )}
 
 
