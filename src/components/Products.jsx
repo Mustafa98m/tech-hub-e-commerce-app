@@ -15,6 +15,13 @@ import {
 } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
 import api from '../utils/axios';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import { Link } from 'react-router';
+
+
+
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -23,6 +30,14 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(6);
+  const [view, setView] = useState('grid');
+
+const handleViewChange = (event, nextView) => {
+  if (nextView !== null) {
+    setView(nextView);
+  }
+};
+
 
   useEffect(() => {
     fetchProducts();
@@ -100,62 +115,112 @@ const Products = () => {
           Products ({filteredProducts.length} items)
         </Typography>
         
-        <TextField
-          fullWidth
-          label="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ mb: 3 }}
-        />
+<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+  <Box sx={{ flexGrow: 1 }}>
+    <TextField
+      fullWidth
+      label="Search products..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </Box>
 
-        <Grid container spacing={3}>
-          {currentProducts.map((product) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={product.id}>
-              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={product.image}
-                  alt={product.title}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" gutterBottom>
-                    {product.title.length > 50 
-                      ? `${product.title.substring(0, 50)}...` 
-                      : product.title
-                    }
-                  </Typography>
-                  
-                  <Chip 
-                    label={product.category} 
-                    size="small" 
-                    sx={{ mb: 1 }} 
-                  />
-                  
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    {product.description.length > 100 
-                      ? `${product.description.substring(0, 100)}...` 
-                      : product.description
-                    }
-                  </Typography>
-                  
-                  <Typography variant="h6" color="primary" sx={{ mb: 2 }}>
-                    ${product.price}
-                  </Typography>
-                  
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    startIcon={<ShoppingCart />}
-                    onClick={() => addToCart(product)}
-                  >
-                    Add to Cart
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+  <ToggleButtonGroup
+    value={view}
+    exclusive
+    onChange={handleViewChange}
+    color="primary"
+  >
+    <ToggleButton value="grid" sx={{ p: 1.5 }}>
+      <ViewModuleIcon />
+    </ToggleButton>
+    <ToggleButton value="list" sx={{ p: 1.5 }}>
+      <ViewListIcon />
+    </ToggleButton>
+  </ToggleButtonGroup>
+</Box>
+
+
+{view === 'grid' ? (
+  <Grid container spacing={3}>
+    {currentProducts.map((product) => (
+      <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4 }}>
+
+          <Link 
+  to={`/products/${product.id}`} 
+  style={{ textDecoration: 'none', color: 'inherit' }}
+>
+  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
+    <CardMedia
+      component="img"
+      height="200"
+      image={product.image}
+      alt={product.title}
+    />
+    <CardContent sx={{ flexGrow: 1 }}>
+      <Typography variant="h6" gutterBottom>
+        {product.title.length > 50 
+          ? `${product.title.substring(0, 50)}...` 
+          : product.title
+        }
+      </Typography>
+      <Chip 
+        label={product.category} 
+        size="small" 
+        sx={{ mb: 1 }} 
+      />
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        {product.description.length > 100 
+          ? `${product.description.substring(0, 100)}...` 
+          : product.description
+        }
+      </Typography>
+      <Typography variant="h6" color="primary" sx={{ mb: 2 }}>
+        ${product.price}
+      </Typography>
+    </CardContent>
+  </Card>
+</Link>
+
+
+      </Grid>
+    ))}
+  </Grid>
+) : (
+  <Stack spacing={2}>
+    {currentProducts.map((product) => (
+      <Card key={product.id} sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+        <CardMedia
+          component="img"
+          sx={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 2 }}
+          image={product.image}
+          alt={product.title}
+        />
+        <Box sx={{ flex: 1, ml: 2 }}>
+          <Typography variant="h6">
+            {product.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {product.description.length > 80 
+              ? `${product.description.substring(0, 80)}...` 
+              : product.description}
+          </Typography>
+          <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+            ${product.price}
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<ShoppingCart />}
+          onClick={() => addToCart(product)}
+        >
+          Add to Cart
+        </Button>
+      </Card>
+    ))}
+  </Stack>
+)}
+
 
         {totalPages > 1 && (
           <Stack spacing={2} alignItems="center" sx={{ mt: 4 }}>

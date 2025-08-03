@@ -11,6 +11,9 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import ProductDetails from './components/ProductDetails';
+
+
 
 const AppContent = () => {
   const { darkMode } = useTheme();
@@ -19,25 +22,43 @@ const AppContent = () => {
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#CCDC28',
+        main: '#7f10c0ff',
         contrastText: '#000000',
       },
       secondary: {
-        main: darkMode ? '#CCDC28' : '#1976d2',
+        main: darkMode ? '#7f10c0ff' : '#f2e6fcff',
       },
       background: {
-        default: darkMode ? '#121212' : '#ffffff',
-        paper: darkMode ? '#1e1e1e' : '#ffffff',
+        default: darkMode ? '#211e1eff' : '#f7f2ffff',
+        paper: darkMode ? '#211e1eff' : '#f7f2ffff',
       },
     },
     components: {
+        MuiOutlinedInput: {
+    styleOverrides: {
+      root: {
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#7f10c0ff' , // اللون عند التركيز Focus
+        },
+      },
+    },
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      root: {
+        '&.Mui-focused': {
+          color: '#7f10c0ff' , // لون عنوان الحقل عند التركيز
+        },
+      },
+    },
+  },
       MuiButton: {
         styleOverrides: {
           contained: {
-            backgroundColor: '#CCDC28',
+            backgroundColor: '#7f10c0ff',
             color: '#000000',
             '&:hover': {
-              backgroundColor: '#b8c424',
+              backgroundColor: '#7f10c0ff',
             },
           },
         },
@@ -45,8 +66,8 @@ const AppContent = () => {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: darkMode ? '#1e1e1e' : '#CCDC28',
-            color: darkMode ? '#ffffff' : '#000000',
+            backgroundColor: darkMode ? '#8910cfff': '#8910cfff',
+            color: darkMode ? '#101010ff' : '#000000',
           },
         },
       },
@@ -61,13 +82,20 @@ const AppContent = () => {
           <Navigation />
           <ProtectedRoute>
             <Routes>
-              <Route path="/products" element={<Products />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/" element={<Navigate to="/products" replace />} />
-              <Route path="/login" element={<Navigate to="/products" replace />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:productId" element={<ProductDetails />} />
+
+
+
+
+
+            <Route path="/users" element={<Users />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/" element={<Navigate to="/products" replace />} />
+            <Route path="/login" element={<Navigate to="/products" replace />} />
             </Routes>
+
           </ProtectedRoute>
           <Routes>
             <Route 
