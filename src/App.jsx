@@ -11,6 +11,7 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import MaterialUISwitch from './components/MaterialUISwitch';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const AppContent = () => {
@@ -20,11 +21,11 @@ const AppContent = () => {
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#CCDC28',
+        main: '#036358ff',
         contrastText: '#000000',
       },
       secondary: {
-        main: darkMode ? '#CCDC28' : '#1976d2',
+        main: darkMode ? '#197151ff' : '#80a6ccff',
       },
       background: {
         default: darkMode ? '#121212' : '#ffffff',
@@ -35,10 +36,10 @@ const AppContent = () => {
       MuiButton: {
         styleOverrides: {
           contained: {
-            backgroundColor: '#CCDC28',
+            backgroundColor: '#197151ff',
             color: '#000000',
             '&:hover': {
-              backgroundColor: '#b8c424',
+              backgroundColor: '#197151ff',
             },
           },
         },
@@ -46,8 +47,8 @@ const AppContent = () => {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: darkMode ? '#1e1e1e' : '#CCDC28',
-            color: darkMode ? '#ffffff' : '#000000',
+            backgroundColor: darkMode ? '#1e1e1e' : '#197151ff',
+            color: darkMode ? '#197151ff' : '#000000',
           },
         },
       },
