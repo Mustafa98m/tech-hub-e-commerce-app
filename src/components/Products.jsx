@@ -20,6 +20,15 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router';
 
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { useTheme } from '@mui/material/styles';
+
+
+
+
+
+
 
 
 
@@ -31,6 +40,14 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(6);
   const [view, setView] = useState('grid');
+
+  const theme = useTheme();
+const isDarkMode = theme.palette.mode === 'dark';
+
+const skeletonBaseColor = isDarkMode ? '#2c2c2c' : '#e0ccff';
+const skeletonHighlightColor = isDarkMode ? '#3d3d3d' : '#f3e6ff';
+
+  
 
 const handleViewChange = (event, nextView) => {
   if (nextView !== null) {
@@ -98,15 +115,62 @@ const handleViewChange = (event, nextView) => {
     setCurrentPage(value);
   };
 
-  if (loading) {
-    return (
-      <Container>
-        <Typography variant="h6" align="center" sx={{ mt: 4 }}>
-          Loading products...
-        </Typography>
-      </Container>
-    );
-  }
+if (loading) {
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Products
+      </Typography>
+
+      <Grid container spacing={3}>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <Card
+              sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: 2,
+                boxShadow: 3,
+              }}
+            >
+                <Skeleton height={200} width="350px"
+                  baseColor={skeletonBaseColor}
+              highlightColor={skeletonHighlightColor} />
+  
+
+
+<CardContent sx={{ flexGrow: 1 }}>
+  <Skeleton height={30} width="80%" sx={{ mb: 1 }} 
+        baseColor={skeletonBaseColor}
+  highlightColor={skeletonHighlightColor} />
+  <Skeleton height={20} width="95%" sx={{ mb: 1 }}  
+        baseColor={skeletonBaseColor}
+  highlightColor={skeletonHighlightColor}/>
+  <Skeleton height={20} width="95%" sx={{ mb: 1 }}
+      baseColor={skeletonBaseColor}
+  highlightColor={skeletonHighlightColor} />
+  <Skeleton height={20} width="95%"  
+    baseColor={skeletonBaseColor}
+  highlightColor={skeletonHighlightColor} />
+
+</CardContent>
+
+
+              <Box sx={{ px: 2, pb: 2 }}>
+                <Skeleton height={36} width="100%" 
+                    baseColor={skeletonBaseColor}
+  highlightColor={skeletonHighlightColor}/>
+              </Box>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
+}
+
+
 
   return (
     <Container maxWidth="lg">
@@ -190,51 +254,66 @@ const handleViewChange = (event, nextView) => {
 ) : (
 
 
-  <Stack spacing={2}>
-  {currentProducts.map((product) => (
-    <Card key={product.id} sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-      <Link
-        to={`/products/${product.id}`}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          textDecoration: 'none',
-          color: 'inherit',
-          flex: 1
-        }}
-      >
-        <CardMedia
-          component="img"
-          sx={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 2 }}
-          image={product.image}
-          alt={product.title}
-        />
+<Stack spacing={2}>
+  {loading ? (
+    Array.from({ length: 6 }).map((_, index) => (
+      <Card key={index} sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+        <Skeleton variant="rectangular" width={120} height={120} />
         <Box sx={{ flex: 1, ml: 2 }}>
-          <Typography variant="h6">
-            {product.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {product.description.length > 80 
-              ? `${product.description.substring(0, 80)}...` 
-              : product.description}
-          </Typography>
-          <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
-            ${product.price}
-          </Typography>
+          <Skeleton height={30} width="60%" sx={{ mb: 1 }} />
+          <Skeleton height={20} width="80%" sx={{ mb: 1 }} />
+          <Skeleton height={20} width="50%" />
         </Box>
-      </Link>
+        <Box sx={{ ml: 2, width: 150 }}>
+          <Skeleton height={36} width="500px" />
+        </Box>
+      </Card>
+    ))
+  ) : (
+    currentProducts.map((product) => (
+      <Card key={product.id} sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+        <Link
+          to={`/products/${product.id}`}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none',
+            color: 'inherit',
+            flex: 1
+          }}
+        >
+          <CardMedia
+            component="img"
+            sx={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 2 }}
+            image={product.image}
+            alt={product.title}
+          />
+          <Box sx={{ flex: 1, ml: 2 }}>
+            <Typography variant="h6">{product.title}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              {product.description.length > 80
+                ? `${product.description.substring(0, 80)}...`
+                : product.description}
+            </Typography>
+            <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+              ${product.price}
+            </Typography>
+          </Box>
+        </Link>
 
-      <Button
-        variant="contained"
-        startIcon={<ShoppingCart />}
-        onClick={() => addToCart(product)}
-        sx={{ ml: 2 }}
-      >
-        Add to Cart
-      </Button>
-    </Card>
-  ))}
+        <Button
+          variant="contained"
+          startIcon={<ShoppingCart />}
+          onClick={() => addToCart(product)}
+          sx={{ ml: 2 }}
+        >
+          Add to Cart
+        </Button>
+      </Card>
+    ))
+  )}
 </Stack>
+
 
 )}
 
