@@ -62,6 +62,7 @@ if (loading) {
               <TableCell>Company</TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {Array.from({ length: 6 }).map((_, index) => (
               <TableRow key={index}>
@@ -96,6 +97,8 @@ if (loading) {
               </TableRow>
             ))}
           </TableBody>
+
+
         </Table>
       </TableContainer>
     </Container>

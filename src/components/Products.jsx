@@ -139,9 +139,9 @@ if (loading) {
               highlightColor={skeletonHighlightColor} />
   
 
-
-<CardContent sx={{ flexGrow: 1 }}>
-  <Skeleton height={30} width="80%" sx={{ mb: 1 }} 
+  
+      <CardContent sx={{ flexGrow: 1 }}>
+      <Skeleton height={30} width="80%" sx={{ mb: 1 }} 
         baseColor={skeletonBaseColor}
   highlightColor={skeletonHighlightColor} />
   <Skeleton height={20} width="95%" sx={{ mb: 1 }}  
@@ -153,6 +153,7 @@ if (loading) {
   <Skeleton height={20} width="95%"  
     baseColor={skeletonBaseColor}
   highlightColor={skeletonHighlightColor} />
+
 
 </CardContent>
 
