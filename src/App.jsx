@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider  } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Navigation from './components/Navigation';
 import Login from './components/Login';
@@ -32,7 +32,7 @@ const AppContent = () => {
       },
       text:{
         primary: darkMode ? "#EDEDED" : "#212121",
-        secondary: darkMode ? "#B0BECS" : "#546E7A",
+        secondary: darkMode ? "#EDEDED" : "#546E7A",
       },
     },
     typography: {

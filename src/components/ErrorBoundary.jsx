@@ -8,7 +8,7 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -66,7 +66,7 @@ class ErrorBoundary extends React.Component {
               </Button>
             )}
             
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.NODE_ENV === 'development' && this.state.error && (
               <Box
                 sx={{
                   mt: 3,

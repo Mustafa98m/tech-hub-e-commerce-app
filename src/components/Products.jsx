@@ -11,11 +11,11 @@ import {
   Box,
   Chip,
   Pagination,
-  Stack
+  Stack,
 } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
-//import api from '../utils/axios';
-import {productsAPI , cartAPI } from '../services/api'
+import { productsAPI, cartAPI } from '../services/api';
+import { ProductsGridSkeleton } from './SkeletonLoader';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -24,7 +24,6 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(6);
-  const [viewMode , setviewMode] = useState("grid");
 
   useEffect(() => {
     fetchProducts();
@@ -119,31 +118,22 @@ const Products = () => {
           sx={{ mb: 3 }}
         />
 
-        <ToggleButtonGroup
-        value={viewMode}
-        exclusive
-        onChange={(e,newView) => setviewMode(newView)}
-        sx={{ mb: 3}}>
-          <ToggleButton value={"grid"}>
-            <ViewModule/> Grid
-          </ToggleButton>
-          <ToggleButton value={"list"}>
-            <ViewList/> List
-          </ToggleButton>
-        </ToggleButtonGroup>
-
-        {viewMode === "grid" ? (
         <Grid container spacing={3}>
           {currentProducts.map((product) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={product.id}>
-              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <CardMedia
                   component='img'
                   height='200'
                   image={product.image}
                   alt={product.title}
                 />
-                
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant='h6' gutterBottom>
                     {product.title.length > 50
@@ -180,50 +170,6 @@ const Products = () => {
             </Grid>
           ))}
         </Grid>
-        ) : (
-          <Stack spacing={2}>
-            {currentProducts.map((product) => (
-              <Card key={product.id} sx={{display: "flex", p: 2}}>
-                <Link
-                to={`/product/${product.id}`}
-                style={{display: "flex" , textDecoration: "none" , color: "inherit" , width: "100%"}}
-                >
-                <CardMedia
-                component={"img"}
-                sx={{width: 150, borderRadius: 2, mr: 2}}
-                image={product.image}
-                alt={product.title}
-                />
-                <Box sx={{flex : 1}}>
-                  <Typography variant="h6">
-                    {product.title.length > 50
-                    ? `${product.title.substring(0,50)}...` : product.title}
-                  </Typography>
-
-                  <Chip label={product.category} size="small" sx={{ mb: 1}}/>
-
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1}}>
-                    {product.description.length > 80 ? 
-                    `${product.description.substring(0,80)}...` : product.description}
-                  </Typography>
-
-                  <Typography variant="h6" color="primary" sx={{ mb: 1}}>
-                    ${product.price}
-                  </Typography>
-                  </Box>
-                  </Link>
-                  <Box sx={{ display: "flex" , alignItems: "center"}}>
-                  <Button
-                  variant="contained"
-                  startIcon={<ShoppingCart/>}
-                  onClick={() => addToCart(product)}>
-                    Add To Cart 
-                  </Button>
-                </Box>
-              </Card>
-            ))}
-          </Stack>
-        )}
 
         {totalPages > 1 && (
           <Stack spacing={2} alignItems='center' sx={{ mt: 4 }}>
